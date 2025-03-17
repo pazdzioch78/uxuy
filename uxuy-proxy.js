@@ -15,17 +15,17 @@ class ClientAPI {
     this.headers = {
       Accept: "*/*",
       "Accept-Encoding": "gzip, deflate, br",
-      "Accept-Language": "vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5",
+      "Accept-Language": "pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7",
       "Content-Type": "application/json",
       Origin: "https://miniapp.uxuy.one",
       referer: "https://miniapp.uxuy.one/",
-      "Sec-Ch-Ua": '"Not/A)Brand";v="99", "Google Chrome";v="115", "Chromium";v="115"',
-      "Sec-Ch-Ua-Mobile": "?0",
-      "Sec-Ch-Ua-Platform": '"Windows"',
+      "Sec-Ch-Ua": '"Not/A)Brand";v="99", "Google Chrome";v="134", "Chromium";v="134"',
+      "Sec-Ch-Ua-Mobile": "?1",
+      "Sec-Ch-Ua-Platform": '"Android"',
       "Sec-Fetch-Dest": "empty",
       "Sec-Fetch-Mode": "cors",
       "Sec-Fetch-Site": "same-origin",
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
+      "User-Agent": "Mozilla/5.0 (Linux; Android 13; SM-A536B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.6998.99 Mobile Safari/537.36",
     };
     this.baseURL = baseURL;
     this.queryId = queryId;
@@ -60,7 +60,7 @@ class ClientAPI {
       return this.session_user_agents[this.session_name];
     }
 
-    console.log(`[Tài khoản ${this.accountIndex + 1}] Tạo user agent...`.blue);
+    console.log(`[Konto ${this.accountIndex + 1}] Tworzenie user agent...`.blue);
     const newUserAgent = this.#get_random_user_agent();
     this.session_user_agents[this.session_name] = newUserAgent;
     this.#save_session_data(this.session_user_agents);
@@ -109,7 +109,7 @@ class ClientAPI {
 
   async log(msg, type = "info") {
     const timestamp = new Date().toLocaleTimeString();
-    const accountPrefix = `[Tài khoản ${this.accountIndex + 1}]`;
+    const accountPrefix = `[Konto ${this.accountIndex + 1}]`;
     const ipPrefix = this.proxyIP ? `[${this.proxyIP}]` : "[Unknown IP]";
     let logMessage = "";
 
@@ -407,7 +407,7 @@ class ClientAPI {
 
     const isExp = isTokenExpired(existingToken);
     if (existingToken && !isExp) {
-      this.log("Using valid token", "success");
+      this.log("Korzystanie z waznego tokenu", "success");
       return existingToken;
     } else {
       this.log("Token not found or expired, skipping...", "warning");
@@ -435,7 +435,7 @@ class ClientAPI {
       let tasks = resTasks.data?.items || [];
       tasks = tasks.filter((t) => !t.rewarded && !settings.SKIP_TASKS.includes(t.id));
       if (tasks.length == 0) {
-        this.log("No task to do", "warning");
+        this.log("Brak zadan do wykonania", "warning");
       } else {
         for (const task of tasks) {
           await sleep(2);
@@ -568,7 +568,7 @@ class ClientAPI {
     this.session_name = userData.userId;
 
     const timesleep = getRandomNumber(settings.DELAY_START_BOT[0], settings.DELAY_START_BOT[1]);
-    console.log(`=========Tài khoản ${accountIndex + 1}| ${firstName + " " + lastName} | ${this.proxyIP} | Bắt đầu sau ${timesleep} giây...`.green);
+    console.log(`=========Konto ${accountIndex + 1}| ${firstName + " " + lastName} | ${this.proxyIP} | Rozpocznie się za ${timesleep} sekund...`.green);
     this.#set_headers();
     await sleep(timesleep);
 
@@ -628,7 +628,7 @@ async function main() {
     console.log(`Proxy: ${proxies.length}`);
     process.exit(1);
   }
-  console.log(colors.yellow("Tool được phát triển bởi nhóm tele Airdrop Hunter Siêu Tốc (https://t.me/airdrophuntersieutoc)"));
+  console.log(colors.yellow("Witam i o zdrowie pytam :-)"));
 
   let maxThreads = settings.MAX_THEADS;
 
@@ -666,14 +666,14 @@ async function main() {
               resolve();
             });
             worker.on("error", (error) => {
-              console.log(`Lỗi worker cho tài khoản ${currentIndex}: ${error.message}`);
+              console.log(`Błąd worker dla konta ${currentIndex}: ${error.message}`);
               worker.terminate();
               resolve();
             });
             worker.on("exit", (code) => {
               worker.terminate();
               if (code !== 0) {
-                errors.push(`Worker cho tài khoản ${currentIndex} thoát với mã: ${code}`);
+                errors.push(`Worker dla konta ${currentIndex} zakończył się z kodem: ${code}`);
               }
               resolve();
             });
@@ -694,7 +694,7 @@ async function main() {
       }
     }
     await sleep(3);
-    console.log(`=============Hoàn thành tất cả tài khoản | Chờ ${settings.TIME_SLEEP} phút=============`.magenta);
+    console.log(`=============Ukończono wszystkie konta | Oczekiwanie ${settings.TIME_SLEEP} minut=============`.magenta);
     await sleep(settings.TIME_SLEEP * 60);
   }
 }
